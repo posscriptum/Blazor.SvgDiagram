@@ -9,11 +9,6 @@ builder.Services.AddServerSideBlazor();
 
 builder.Services.AddScoped<IDiagram, Diagram>();
 
-//builder.Services.AddScoped<IRectangle, Rectangle>();
-//builder.Services.AddScoped<ICircle, Circle>();
-//builder.Services.AddScoped<ILine, Line>();
-//builder.Services.AddScoped<IImageShape, ImageShape>();
-
 // Register ShapeFactory
 builder.Services.AddScoped<IShapeFactory, ShapeFactory>();
 

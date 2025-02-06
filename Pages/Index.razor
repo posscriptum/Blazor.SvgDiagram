@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using Blazor.SvgDiagram.Extension
 
 @inject IJSRuntime JSRuntime
 
@@ -12,47 +13,42 @@
     <button @onclick="InitializeSvg">Create Workspace</button>
 </div>
 
+<div id="svg-container">
+</div>
+
 <div id="diagram-properties">
     @if (_selectedElement != null)
     {
         <h3>Selected Element: @_selectedElement.Type</h3>
+        @if (_selectedElement.Type != null)
+        {
+            <p>X: @_selectedElement.X</p>
+            <p>Y: @_selectedElement.Y</p>
+        }
         @if (_selectedElement.Type == "circle")
         {
             <p>Radius: @_selectedElement.Radius</p>
-            <p>X: @_selectedElement.X</p>
-            <p>Y: @_selectedElement.Y</p>
         }
         else if (_selectedElement.Type == "rect")
         {
             <p>Width: @_selectedElement.Width</p>
             <p>Height: @_selectedElement.Height</p>
-            <p>X: @_selectedElement.X</p>
-            <p>Y: @_selectedElement.Y</p>
         }
-        // Add properties for other shapes
         else if (_selectedElement.Type == "line")
         {
-            <p>X1: @_selectedElement.X1</p>
-            <p>Y1: @_selectedElement.Y1</p>
             <p>X2: @_selectedElement.X2</p>
             <p>Y2: @_selectedElement.Y2</p>
         }
         else if (_selectedElement.Type == "image")
         {
-            <p>X: @_selectedElement.X</p>
-            <p>Y: @_selectedElement.Y</p>
             <p>Width: @_selectedElement.Width</p>
             <p>Height: @_selectedElement.Height</p>
-
         }
     }
     else
     {
         <p>No element selected.</p>
     }
-</div>
-
-<div id="svg-container">
 </div>
 
 <div>
@@ -86,36 +82,13 @@
         }
     }
 
-    private async Task AddRectangle()
-    {
-        if (_svgModule != null)
-        {
-            await _svgModule.InvokeVoidAsync("addRectangle", 50, 50, 100, 80, "red");
-        }
-    }
+    private async Task AddRectangle() => await JSRuntime.InvokeSvgMethod(_svgModule, "addRectangle", 50, 50, 100, 80, "red");
 
-    private async Task AddCircle()
-    {
-        if (_svgModule != null)
-        {
-            await _svgModule.InvokeVoidAsync("addCircle", 150, 150, 50, "blue");
-        }
-    }
+    private async Task AddCircle() => await JSRuntime.InvokeSvgMethod(_svgModule, "addCircle", 150, 150, 50, "blue");
 
-    private async Task AddLine()
-    {
-        if (_svgModule != null)
-        {
-            await _svgModule.InvokeVoidAsync("addLine", 20, 20, 200, 100, "green");
-        }
-    }
-    private async Task AddImage()
-    {
-        if (_svgModule != null)
-        {
-            await _svgModule.InvokeVoidAsync("addImage", "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Svg_example2.svg/250px-Svg_example2.svg.png", 250, 250, 100, 100);
-        }
-    }
+    private async Task AddLine() => await JSRuntime.InvokeSvgMethod(_svgModule, "addLine", 20, 20, 200, 100, "green");
+
+    private async Task AddImage() => await JSRuntime.InvokeSvgMethod(_svgModule, "addImage", "https://opencart.club/uploads/monthly_2022_04/12e706e67.png.e826c2e86cba6107b041e6e0abe32780.png", 250, 250, 100, 100);
 
     // Method to handle element selection from JavaScript
     public void SelectElementInternal(string type, double x, double y, double width = 0, double height = 0, double r = 0, double x1 = 0, double y1 = 0, double x2 = 0, double y2 = 0)

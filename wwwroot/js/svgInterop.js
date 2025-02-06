@@ -162,13 +162,11 @@ function reportElementInfo(element, type) {
         y2 = 0;
     }
     else if (type === 'line') {
-        x = 0;
-        y = 0;
+        x = x1 = element.attr('x1');
+        y = y1 = element.attr('y1');
         width = 0;
         height = 0;
         r = 0;
-        x1 = element.attr('x1');
-        y1 = element.attr('y1');
         x2 = element.attr('x2');
         y2 = element.attr('y2');
     }
