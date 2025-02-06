@@ -90,39 +90,10 @@
 
     private async Task AddImage() => await JSRuntime.InvokeSvgMethod(_svgModule, "addImage", "https://opencart.club/uploads/monthly_2022_04/12e706e67.png.e826c2e86cba6107b041e6e0abe32780.png", 250, 250, 100, 100);
 
-    // Method to handle element selection from JavaScript
-    public void SelectElementInternal(string type, double x, double y, double width = 0, double height = 0, double r = 0, double x1 = 0, double y1 = 0, double x2 = 0, double y2 = 0)
+    public void SelectElementInternal(ElementInfo elementInfo)
     {
-        _selectedElement = new ElementInfo
-            {
-                Type = type,
-                X = x,
-                Y = y,
-                Width = width,
-                Height = height,
-                Radius = r,
-                X1 = x1,
-                Y1 = y1,
-                X2 = x2,
-                Y2 = y2
-            };
+        _selectedElement = elementInfo;
         StateHasChanged();
-    }
-
-    // Data model for element properties
-    public class ElementInfo
-    {
-        public string Type { get; set; }
-        public double X { get; set; }
-        public double Y { get; set; }
-        public double Width { get; set; }
-        public double Height { get; set; }
-        public double Radius { get; set; }
-
-        public double X1 { get; set; }
-        public double Y1 { get; set; }
-        public double X2 { get; set; }
-        public double Y2 { get; set; }
     }
 
     public async ValueTask DisposeAsync()

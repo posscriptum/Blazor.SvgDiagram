@@ -11,11 +11,11 @@ namespace Blazor.SvgDiagram
         }
 
         [JSInvokable]
-        public static void SelectElement(string type, double x, double y, double width = 0, double height = 0, double r = 0, double x1 = 0, double y1 = 0, double x2 = 0, double y2 = 0)
+        public static void SelectElement(ElementInfo elementInfo /*string type, double x, double y, double width = 0, double height = 0, double r = 0, double x1 = 0, double y1 = 0, double x2 = 0, double y2 = 0*/)
         {
             if (_indexComponent != null)
             {
-                _indexComponent!.SelectElementInternal(type, x, y, width, height, r, x1, y1, x2, y2);
+                _indexComponent!.SelectElementInternal(elementInfo);
             }
             else
             {

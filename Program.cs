@@ -1,16 +1,9 @@
-using Blazor.SvgDiagram.Data;
-using Blazor.SvgDiagram.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-
-builder.Services.AddScoped<IDiagram, Diagram>();
-
-// Register ShapeFactory
-builder.Services.AddScoped<IShapeFactory, ShapeFactory>();
 
 var app = builder.Build();
 
