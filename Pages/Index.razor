@@ -1,0 +1,162 @@
+﻿@page "/"
+
+@inject IJSRuntime JSRuntime
+
+<h1>Blazor SVG Diagram</h1>
+
+<div>
+    <label>Width:</label>
+    <input type="number" @bind="Width" />
+    <label>Height:</label>
+    <input type="number" @bind="Height" />
+    <button @onclick="InitializeSvg">Create Workspace</button>
+</div>
+
+<div id="diagram-properties">
+    @if (_selectedElement != null)
+    {
+        <h3>Selected Element: @_selectedElement.Type</h3>
+        @if (_selectedElement.Type == "circle")
+        {
+            <p>Radius: @_selectedElement.Radius</p>
+            <p>X: @_selectedElement.X</p>
+            <p>Y: @_selectedElement.Y</p>
+        }
+        else if (_selectedElement.Type == "rect")
+        {
+            <p>Width: @_selectedElement.Width</p>
+            <p>Height: @_selectedElement.Height</p>
+            <p>X: @_selectedElement.X</p>
+            <p>Y: @_selectedElement.Y</p>
+        }
+        // Add properties for other shapes
+        else if (_selectedElement.Type == "line")
+        {
+            <p>X1: @_selectedElement.X1</p>
+            <p>Y1: @_selectedElement.Y1</p>
+            <p>X2: @_selectedElement.X2</p>
+            <p>Y2: @_selectedElement.Y2</p>
+        }
+        else if (_selectedElement.Type == "image")
+        {
+            <p>X: @_selectedElement.X</p>
+            <p>Y: @_selectedElement.Y</p>
+            <p>Width: @_selectedElement.Width</p>
+            <p>Height: @_selectedElement.Height</p>
+
+        }
+    }
+    else
+    {
+        <p>No element selected.</p>
+    }
+</div>
+
+<div id="svg-container">
+</div>
+
+<div>
+    <button @onclick="AddRectangle">Add Rectangle</button>
+    <button @onclick="AddCircle">Add Circle</button>
+    <button @onclick="AddLine">Add Line</button>
+    <button @onclick="AddImage">Add Image</button>
+</div>
+
+@code {
+    private int Width { get; set; } = 800;
+    private int Height { get; set; } = 600;
+    private IJSObjectReference? _svgModule;
+    private ElementInfo? _selectedElement;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _svgModule = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./js/svgInterop.js");
+            await InitializeSvg();
+            DiagramHelper.Initialize(this);
+        }
+    }
+    private async Task InitializeSvg()
+    {
+        if (_svgModule != null)
+        {
+            await _svgModule.InvokeVoidAsync("createSvg", "svg-container", Width, Height);
+            await _svgModule.InvokeVoidAsync("drawGrid", Width, Height, 20);
+        }
+    }
+
+    private async Task AddRectangle()
+    {
+        if (_svgModule != null)
+        {
+            await _svgModule.InvokeVoidAsync("addRectangle", 50, 50, 100, 80, "red");
+        }
+    }
+
+    private async Task AddCircle()
+    {
+        if (_svgModule != null)
+        {
+            await _svgModule.InvokeVoidAsync("addCircle", 150, 150, 50, "blue");
+        }
+    }
+
+    private async Task AddLine()
+    {
+        if (_svgModule != null)
+        {
+            await _svgModule.InvokeVoidAsync("addLine", 20, 20, 200, 100, "green");
+        }
+    }
+    private async Task AddImage()
+    {
+        if (_svgModule != null)
+        {
+            await _svgModule.InvokeVoidAsync("addImage", "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Svg_example2.svg/250px-Svg_example2.svg.png", 250, 250, 100, 100);
+        }
+    }
+
+    // Method to handle element selection from JavaScript
+    public void SelectElementInternal(string type, double x, double y, double width = 0, double height = 0, double r = 0, double x1 = 0, double y1 = 0, double x2 = 0, double y2 = 0)
+    {
+        _selectedElement = new ElementInfo
+            {
+                Type = type,
+                X = x,
+                Y = y,
+                Width = width,
+                Height = height,
+                Radius = r,
+                X1 = x1,
+                Y1 = y1,
+                X2 = x2,
+                Y2 = y2
+            };
+        StateHasChanged();
+    }
+
+    // Data model for element properties
+    public class ElementInfo
+    {
+        public string Type { get; set; }
+        public double X { get; set; }
+        public double Y { get; set; }
+        public double Width { get; set; }
+        public double Height { get; set; }
+        public double Radius { get; set; }
+
+        public double X1 { get; set; }
+        public double Y1 { get; set; }
+        public double X2 { get; set; }
+        public double Y2 { get; set; }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_svgModule != null)
+        {
+            await _svgModule.DisposeAsync();
+        }
+    }
+}
