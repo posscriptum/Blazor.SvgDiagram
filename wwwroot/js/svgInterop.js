@@ -77,7 +77,6 @@ function makeDraggable(element, type) {
         }
 
         element.addClass('selected');
-
     });
 
     element.on('mousemove', function (event) {
@@ -98,8 +97,6 @@ function makeDraggable(element, type) {
                 this.attr('x2', this.attr('x2') + deltaX);
                 this.attr('y2', this.attr('y2') + deltaY);
             }
-
-
         }
     });
 
@@ -117,55 +114,42 @@ function makeDraggable(element, type) {
     element.on('click', function () {
         reportElementInfo(this, type); 
     });
-
-
 }
 
 function reportElementInfo(element, type) {
-    let x, y, width, height, r, x1, y1, x2, y2;
+    let elementInfo = {
+        Type: type,
+        X: 0,
+        Y: 0,
+        Width: 0,
+        Height: 0,
+        Radius: 0,
+        X1: 0,
+        Y1: 0,
+        X2: 0,
+        Y2: 0
+    };
 
-    if (type === 'circle') {
-        x = element.cx();
-        y = element.cy();
-        r = element.attr('r');
-        width = 0;
-        height = 0;
-        x1 = 0;
-        y1 = 0;
-        x2 = 0;
-        y2 = 0;
-    } else if (type === 'rect') {
-        x = element.x();
-        y = element.y();
-        width = element.width();
-        height = element.height();
-        r = 0;
-        x1 = 0;
-        y1 = 0;
-        x2 = 0;
-        y2 = 0;
-    }
-    else if (type === 'image') {
-        x = element.x();
-        y = element.y();
-        width = element.width();
-        height = element.height();
-        r = 0;
-        x1 = 0;
-        y1 = 0;
-        x2 = 0;
-        y2 = 0;
-    }
-    else if (type === 'line') {
-        x = x1 = element.attr('x1');
-        y = y1 = element.attr('y1');
-        width = 0;
-        height = 0;
-        r = 0;
-        x2 = element.attr('x2');
-        y2 = element.attr('y2');
+    switch (type) {
+        case 'circle':
+            elementInfo.X = element.cx();
+            elementInfo.Y = element.cy();
+            elementInfo.Radius = element.attr('r');
+            break;
+        case 'rect':
+        case 'image':
+            elementInfo.X = element.x();
+            elementInfo.Y = element.y();
+            elementInfo.Width = element.width();
+            elementInfo.Height = element.height();
+            break;
+        case 'line':
+            elementInfo.X = elementInfo.X1 = element.attr('x1');
+            elementInfo.Y = elementInfo.Y1 = element.attr('y1');
+            elementInfo.X2 = element.attr('x2');
+            elementInfo.Y2 = element.attr('y2');
+            break;
     }
 
-    debugger;
-    DotNet.invokeMethodAsync('Blazor.SvgDiagram', 'SelectElement', type, x, y, width, height, r, x1, y1, x2, y2);
+    DotNet.invokeMethodAsync('Blazor.SvgDiagram', 'SelectElement', elementInfo);
 }

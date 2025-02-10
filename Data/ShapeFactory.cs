@@ -12,7 +12,7 @@
                 case "rectangle":
                     if (parameters.Length != 5) 
                         throw new ArgumentException("Неверное количество параметров для прямоугольника");
-                    return new Rectangle(jsRuntime).SetParameters(double.Parse(parameters[0].ToString()!), double.Parse(parameters[1].ToString()!), double.Parse(parameters[2].ToString()!), double.Parse(parameters[3].ToString()!), parameters[4].ToString()!);
+                    return new Rectangle(jsRuntime, double.Parse(parameters[0].ToString()!), double.Parse(parameters[1].ToString()!), double.Parse(parameters[2].ToString()!), double.Parse(parameters[3].ToString()!), parameters[4].ToString()!);
 
                 case "circle":
                     if (parameters.Length != 4)

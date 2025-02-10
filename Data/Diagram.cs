@@ -22,7 +22,7 @@ namespace Blazor.SvgDiagram.Data
 
         public IJSObjectReference? GetSvgModule() => _svgModule;
 
-        public async Task AddShapeAsync(IShape shape, IJSObjectReference? _svgModule)
+        public async Task AddShapeAsync(IShape shape)
         {
             await shape.Add(_svgModule);
         }

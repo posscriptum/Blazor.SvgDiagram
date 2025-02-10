@@ -8,7 +8,6 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
 builder.Services.AddScoped<IDiagram, Diagram>();
-builder.Services.AddTransient<IRectangle, Rectangle>();
 
 // Register ShapeFactory
 builder.Services.AddTransient<IShapeFactory, ShapeFactory>();

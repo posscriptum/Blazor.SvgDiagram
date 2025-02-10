@@ -1,6 +1,7 @@
 ﻿@page "/"
 @using Blazor.SvgDiagram.Extension
 @using Blazor.SvgDiagram.Interfaces
+@using Blazor.SvgDiagram.Data
 
 @inject IJSRuntime JSRuntime
 @inject IDiagram Diagram
@@ -76,46 +77,18 @@
         }
     }
 
-    private async Task AddRectangle() => await Diagram.AddShapeAsync(Shape.CreateShape("rectangle", JSRuntime, 50, 50, 100, 80, "red"), Diagram.GetSvgModule());
+    private async Task AddRectangle() => await Diagram.AddShapeAsync(Shape.CreateShape("rectangle", JSRuntime, 50, 50, 100, 80, "red"));
 
-    private async Task AddCircle() => await Diagram.AddShapeAsync(Shape.CreateShape("circle", JSRuntime, 150, 150, 50, "blue"), Diagram.GetSvgModule());
+    private async Task AddCircle() => await Diagram.AddShapeAsync(Shape.CreateShape("circle", JSRuntime, 150, 150, 50, "blue"));
 
-    private async Task AddLine() => await Diagram.AddShapeAsync(Shape.CreateShape("line", JSRuntime, 20, 20, 200, 100, "green"), Diagram.GetSvgModule());
+    private async Task AddLine() => await Diagram.AddShapeAsync(Shape.CreateShape("line", JSRuntime, 20, 20, 200, 100, "green"));
 
-    private async Task AddImage() => await Diagram.AddShapeAsync(Shape.CreateShape("image", JSRuntime, "https://opencart.club/uploads/monthly_2022_04/12e706e67.png.e826c2e86cba6107b041e6e0abe32780.png", 250, 250, 100, 100), Diagram.GetSvgModule());
+    private async Task AddImage() => await Diagram.AddShapeAsync(Shape.CreateShape("image", JSRuntime, "https://opencart.club/uploads/monthly_2022_04/12e706e67.png.e826c2e86cba6107b041e6e0abe32780.png", 250, 250, 100, 100));
 
-    public void SelectElementInternal(string type, double x, double y, double width = 0, double height = 0, double r = 0, double x1 = 0, double y1 = 0, double x2 = 0, double y2 = 0)
+    public void SelectElementInternal(ElementInfo elementInfo)
     {
-        _selectedElement = new ElementInfo
-            {
-                Type = type,
-                X = x,
-                Y = y,
-                Width = width,
-                Height = height,
-                Radius = r,
-                X1 = x1,
-                Y1 = y1,
-                X2 = x2,
-                Y2 = y2
-            };
+        _selectedElement = elementInfo;
         StateHasChanged();
-    }
-
-    // Data model for element properties
-    public class ElementInfo
-    {
-        public string Type { get; set; }
-        public double X { get; set; }
-        public double Y { get; set; }
-        public double Width { get; set; }
-        public double Height { get; set; }
-        public double Radius { get; set; }
-
-        public double X1 { get; set; }
-        public double Y1 { get; set; }
-        public double X2 { get; set; }
-        public double Y2 { get; set; }
     }
 
     public async ValueTask DisposeAsync()
