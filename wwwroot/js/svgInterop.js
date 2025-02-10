@@ -75,9 +75,7 @@ function makeDraggable(element, type) {
             initialY = this.attr('y1');
         }
 
-
         element.addClass('selected');
-
     });
 
     element.on('mousemove', function (event) {

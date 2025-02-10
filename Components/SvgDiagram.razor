@@ -1,0 +1,54 @@
+﻿<h1>Blazor SVG Diagram</h1>
+
+<div>
+    <label>Width:</label>
+    <input type="number" @bind="Width" />
+    <label>Height:</label>
+    <input type="number" @bind="Height" />
+    <button @onclick="InitializeSvg">Create Workspace</button>
+</div>
+
+<div id="svg-container">
+</div>
+
+<div id="diagram-properties">
+    @if (_selectedElement != null)
+    {
+        <h3>Selected Element: @_selectedElement.Type</h3>
+        @if (_selectedElement.Type != null)
+        {
+            <p>X: @_selectedElement.X</p>
+            <p>Y: @_selectedElement.Y</p>
+        }
+        @if (_selectedElement.Type == "circle")
+        {
+            <p>Radius: @_selectedElement.Radius</p>
+        }
+        else if (_selectedElement.Type == "rect")
+        {
+            <p>Width: @_selectedElement.Width</p>
+            <p>Height: @_selectedElement.Height</p>
+        }
+        else if (_selectedElement.Type == "line")
+        {
+            <p>X2: @_selectedElement.X2</p>
+            <p>Y2: @_selectedElement.Y2</p>
+        }
+        else if (_selectedElement.Type == "image")
+        {
+            <p>Width: @_selectedElement.Width</p>
+            <p>Height: @_selectedElement.Height</p>
+        }
+    }
+    else
+    {
+        <p>No element selected.</p>
+    }
+</div>
+
+<div>
+    <button @onclick="AddRectangle">Add Rectangle</button>
+    <button @onclick="AddCircle">Add Circle</button>
+    <button @onclick="AddLine">Add Line</button>
+    <button @onclick="AddImage">Add Image</button>
+</div>
