@@ -5,10 +5,10 @@ let draw;
 export function createSvg(containerId, width, height) {
     debugger;
     const container = document.getElementById(containerId);
-    container.innerHTML = ''; // Clear previous SVG, if any
+    container.innerHTML = ''; 
     draw = SVG().addTo(container).size(width, height);
-    draw.attr('id', 'mainSvg'); // Add an ID to the SVG element
-    draw.viewbox(0, 0, width, height); // set viewbox
+    draw.attr('id', 'mainSvg'); 
+    draw.viewbox(0, 0, width, height); 
     return draw;
 }
 
@@ -103,19 +103,19 @@ function makeDraggable(element, type) {
         }
     });
 
-    element.on('mouseup', function (event) {
+    element.on('mouseup', function () {
         isDragging = false;
         element.removeClass('selected');
-        reportElementInfo(this, type); // Report element info on mouse up
+        reportElementInfo(this, type); 
     });
 
-    element.on('mouseleave', function (event) {
+    element.on('mouseleave', function () {
         isDragging = false;
         element.removeClass('selected');
     });
 
-    element.on('click', function (event) {
-        reportElementInfo(this, type); // Report element info on click
+    element.on('click', function () {
+        reportElementInfo(this, type); 
     });
 
 
