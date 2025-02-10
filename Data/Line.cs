@@ -1,4 +1,5 @@
-﻿using Blazor.SvgDiagram.Interfaces;
+﻿using Blazor.SvgDiagram.Extension;
+using Blazor.SvgDiagram.Interfaces;
 using Microsoft.JSInterop;
 
 namespace Blazor.SvgDiagram.Data
@@ -19,9 +20,9 @@ namespace Blazor.SvgDiagram.Data
             _color = color;
         }
 
-        public async Task Add()
+        public async Task Add(IJSObjectReference? _svgModul)
         {
-            await _jsRuntime.InvokeVoidAsync("addLine", _x1, _y1, _x2, _y2, _color);
+            await _jsRuntime.InvokeSvgMethod(_svgModul, "addLine", _x1, _y1, _x2, _y2, _color);
         }
     }
 }

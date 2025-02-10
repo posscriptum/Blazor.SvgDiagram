@@ -11,6 +11,6 @@ namespace Blazor.SvgDiagram.Data
             _jsRuntime = jsRuntime;
         }
 
-        public abstract Task Add(); 
+        public abstract Task AddAsync(); 
     }
 }

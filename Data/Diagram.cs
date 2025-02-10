@@ -13,16 +13,18 @@ namespace Blazor.SvgDiagram.Data
             _jsRuntime = jsRuntime;
         }
 
-        public async Task Initialize(string containerId, int width, int height)
+        public async Task InitializeAsync(string containerId, int width, int height)
         {
             _svgModule = await _jsRuntime.InvokeAsync<IJSObjectReference>("import", "./js/svgInterop.js");
             await _svgModule.InvokeVoidAsync("createSvg", containerId, width, height);
             await _svgModule.InvokeVoidAsync("drawGrid", width, height, 20);
         }
 
-        public async Task AddShape(IShape shape)
+        public IJSObjectReference? GetSvgModule() => _svgModule;
+
+        public async Task AddShapeAsync(IShape shape, IJSObjectReference? _svgModule)
         {
-            await shape.Add();
+            await shape.Add(_svgModule);
         }
 
         public async ValueTask DisposeAsync()

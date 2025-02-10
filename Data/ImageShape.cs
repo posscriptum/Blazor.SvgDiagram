@@ -1,5 +1,7 @@
-﻿using Blazor.SvgDiagram.Interfaces;
+﻿using Blazor.SvgDiagram.Extension;
+using Blazor.SvgDiagram.Interfaces;
 using Microsoft.JSInterop;
+using System.Drawing;
 
 namespace Blazor.SvgDiagram.Data
 {
@@ -19,9 +21,9 @@ namespace Blazor.SvgDiagram.Data
             _height = height;
         }
 
-        public async Task Add()
+        public async Task Add(IJSObjectReference? _svgModul)
         {
-            await _jsRuntime.InvokeVoidAsync("addImage", _url, _x, _y, _width, _height);
+            await _jsRuntime.InvokeSvgMethod(_svgModul, "addImage", _url, _x, _y, _width, _height);
         }
     }
 }

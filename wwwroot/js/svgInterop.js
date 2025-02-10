@@ -75,11 +75,6 @@ function makeDraggable(element, type) {
             initialX = this.x();
             initialY = this.y();
         }
-        else if (type === 'line') {
-            initialX = this.attr('x1');
-            initialY = this.attr('y1');
-        }
-
 
         element.addClass('selected');
 
@@ -98,8 +93,8 @@ function makeDraggable(element, type) {
                 this.move(initialX + deltaX, initialY + deltaY);
             }
             else if (type === 'line') {
-                this.attr('x1', initialX + deltaX);
-                this.attr('y1', initialY + deltaY);
+                this.attr('x1', this.attr('x1') + deltaX);
+                this.attr('y1', this.attr('y1') + deltaY);
                 this.attr('x2', this.attr('x2') + deltaX);
                 this.attr('y2', this.attr('y2') + deltaY);
             }

@@ -1,7 +1,10 @@
 ﻿@page "/"
 @using Blazor.SvgDiagram.Extension
+@using Blazor.SvgDiagram.Interfaces
 
 @inject IJSRuntime JSRuntime
+@inject IDiagram Diagram
+@inject IShapeFactory Shape
 
 <h1>Blazor SVG Diagram</h1>
 
@@ -10,7 +13,7 @@
     <input type="number" @bind="Width" />
     <label>Height:</label>
     <input type="number" @bind="Height" />
-    <button @onclick="InitializeSvg">Create Workspace</button>
+    <button @onclick="@(async => Diagram.InitializeAsync("svg-container", Width, Height))">Create Workspace</button>
 </div>
 
 <div id="svg-container">
@@ -68,29 +71,19 @@
     {
         if (firstRender)
         {
-            _svgModule = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./js/svgInterop.js");
-            await InitializeSvg();
+            await Diagram.InitializeAsync("svg-container", Width, Height);
             DiagramHelper.Initialize(this);
         }
     }
-    private async Task InitializeSvg()
-    {
-        if (_svgModule != null)
-        {
-            await _svgModule.InvokeVoidAsync("createSvg", "svg-container", Width, Height);
-            await _svgModule.InvokeVoidAsync("drawGrid", Width, Height, 20);
-        }
-    }
 
-    private async Task AddRectangle() => await JSRuntime.InvokeSvgMethod(_svgModule, "addRectangle", 50, 50, 100, 80, "red");
+    private async Task AddRectangle() => await Diagram.AddShapeAsync(Shape.CreateShape("rectangle", JSRuntime, 50, 50, 100, 80, "red"), Diagram.GetSvgModule());
 
-    private async Task AddCircle() => await JSRuntime.InvokeSvgMethod(_svgModule, "addCircle", 150, 150, 50, "blue");
+    private async Task AddCircle() => await Diagram.AddShapeAsync(Shape.CreateShape("circle", JSRuntime, 150, 150, 50, "blue"), Diagram.GetSvgModule());
 
-    private async Task AddLine() => await JSRuntime.InvokeSvgMethod(_svgModule, "addLine", 20, 20, 200, 100, "green");
+    private async Task AddLine() => await Diagram.AddShapeAsync(Shape.CreateShape("line", JSRuntime, 20, 20, 200, 100, "green"), Diagram.GetSvgModule());
 
-    private async Task AddImage() => await JSRuntime.InvokeSvgMethod(_svgModule, "addImage", "https://opencart.club/uploads/monthly_2022_04/12e706e67.png.e826c2e86cba6107b041e6e0abe32780.png", 250, 250, 100, 100);
+    private async Task AddImage() => await Diagram.AddShapeAsync(Shape.CreateShape("image", JSRuntime, "https://opencart.club/uploads/monthly_2022_04/12e706e67.png.e826c2e86cba6107b041e6e0abe32780.png", 250, 250, 100, 100), Diagram.GetSvgModule());
 
-    // Method to handle element selection from JavaScript
     public void SelectElementInternal(string type, double x, double y, double width = 0, double height = 0, double r = 0, double x1 = 0, double y1 = 0, double x2 = 0, double y2 = 0)
     {
         _selectedElement = new ElementInfo
@@ -127,9 +120,6 @@
 
     public async ValueTask DisposeAsync()
     {
-        if (_svgModule != null)
-        {
-            await _svgModule.DisposeAsync();
-        }
+        await Diagram.DisposeAsync();
     }
 }

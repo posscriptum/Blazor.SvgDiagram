@@ -1,8 +1,10 @@
-﻿namespace Blazor.SvgDiagram.Interfaces
+﻿using Microsoft.JSInterop;
+
+namespace Blazor.SvgDiagram.Interfaces
 {
     public interface IShape
     {
-        Task Add();
+        Task Add(IJSObjectReference? _svgModule);
     }
 
     public interface IRectangle : IShape { }

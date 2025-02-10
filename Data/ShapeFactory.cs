@@ -10,23 +10,23 @@
             switch (type.ToLower())
             {
                 case "rectangle":
-                    if (parameters.Length != 5)
+                    if (parameters.Length != 5) 
                         throw new ArgumentException("Неверное количество параметров для прямоугольника");
-                    return new Rectangle(jsRuntime, (double)parameters[0], (double)parameters[1], (double)parameters[2], (double)parameters[3], (string)parameters[4]);
+                    return new Rectangle(jsRuntime).SetParameters(double.Parse(parameters[0].ToString()!), double.Parse(parameters[1].ToString()!), double.Parse(parameters[2].ToString()!), double.Parse(parameters[3].ToString()!), parameters[4].ToString()!);
 
                 case "circle":
                     if (parameters.Length != 4)
                         throw new ArgumentException("Неверное количество параметров для круга");
-                    return new Circle(jsRuntime, (double)parameters[0], (double)parameters[1], (double)parameters[2], (string)parameters[3]);
+                    return new Circle(jsRuntime, double.Parse(parameters[0].ToString()!), double.Parse(parameters[1].ToString()!), double.Parse(parameters[2].ToString()!), parameters[3].ToString()!);
 
                 case "line":
                     if (parameters.Length != 5)
                         throw new ArgumentException("Неверное количество параметров для линии");
-                    return new Line(jsRuntime, (double)parameters[0], (double)parameters[1], (double)parameters[2], (double)parameters[3], (string)parameters[4]);
+                    return new Line(jsRuntime, double.Parse(parameters[0].ToString()!), double.Parse(parameters[1].ToString()!), double.Parse(parameters[2].ToString()!), double.Parse(parameters[3].ToString()!), parameters[4].ToString()!);
                 case "image":
                     if (parameters.Length != 5)
                         throw new ArgumentException("Неверное количество параметров для изображения");
-                    return new ImageShape(jsRuntime, (string)parameters[0], (double)parameters[1], (double)parameters[2], (double)parameters[3], (double)parameters[4]);
+                    return new ImageShape(jsRuntime, parameters[0].ToString()!, double.Parse(parameters[1].ToString()!), double.Parse(parameters[2].ToString()!), double.Parse(parameters[3].ToString()!), double.Parse(parameters[4].ToString()!));
                 default:
                     throw new ArgumentException($"Неизвестный тип фигуры: {type}");
             }
