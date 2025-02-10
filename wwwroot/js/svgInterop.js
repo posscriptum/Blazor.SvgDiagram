@@ -1,4 +1,4 @@
-﻿import { SVG, extend } from 'https://cdn.jsdelivr.net/npm/@svgdotjs/svg.js@3.0/dist/svg.esm.js'
+﻿import { SVG } from 'https://cdn.jsdelivr.net/npm/@svgdotjs/svg.js@3.0/dist/svg.esm.js'
 
 let draw;
 
