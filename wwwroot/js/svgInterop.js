@@ -115,6 +115,16 @@ function makeDraggable(element, type) {
     });
 }
 
+export function getExportedFunctionNames() {
+    var functionsName = [];
+    for (var l in this) {
+        if (this[l] instanceof Function) {
+            functionsName.push(l);
+        }
+    }
+    return functionsName;
+}
+
 function reportElementInfo(element, type) {
     let elementInfo = {
         Type: type,

@@ -1,5 +1,4 @@
-﻿using Blazor.SvgDiagram.Extension;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using Blazor.SvgDiagram.Interfaces;
 
@@ -22,6 +21,7 @@ namespace Blazor.SvgDiagram.Components
                 await InitializeSvg();
                 DiagramHelper.Initialize(this);
             }
+            StateHasChanged();
         }
         private async Task InitializeSvg()
         {
@@ -31,14 +31,6 @@ namespace Blazor.SvgDiagram.Components
                 await _svgModule.InvokeVoidAsync("drawGrid", Width, Height, 20);
             }
         }
-
-        private async Task AddRectangle() => await JSRuntime!.InvokeSvgMethod(_svgModule, "addRectangle", 50, 50, 100, 80, "red");
-
-        private async Task AddCircle() => await JSRuntime!.InvokeSvgMethod(_svgModule, "addCircle", 150, 150, 50, "blue");
-
-        private async Task AddLine() => await JSRuntime!.InvokeSvgMethod(_svgModule, "addLine", 20, 20, 200, 100, "green");
-
-        private async Task AddImage() => await JSRuntime!.InvokeSvgMethod(_svgModule, "addImage", "https://opencart.club/uploads/monthly_2022_04/12e706e67.png.e826c2e86cba6107b041e6e0abe32780.png", 250, 250, 100, 100);
 
         public void SelectElementInternal(ElementInfo elementInfo)
         {
